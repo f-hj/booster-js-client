@@ -28,14 +28,14 @@ if [ "$release_note" = "" ]; then
     echo "[INFO] No command line input provided. Set \$release_note to $release_note"
 fi
 
+olddir=$PWD
+
+rm -rf /tmp/oa-ts-axios || true
+mkdir /tmp/oa-ts-axios
+cd /tmp/oa-ts-axios
+
 # Initialize the local directory as a Git repository
 git init
-
-# Adds the files in the local repository and stages them for commit.
-git add .
-
-# Commits the tracked changes and prepares them to be pushed to a remote repository.
-git commit -m "$release_note"
 
 # Sets the new remote
 git_remote=`git remote`
@@ -52,7 +52,14 @@ fi
 
 git pull origin master
 
+cp -R $olddir/* .
+
+# Adds the files in the local repository and stages them for commit.
+git add .
+
+# Commits the tracked changes and prepares them to be pushed to a remote repository.
+git commit -m "$release_note"
+
 # Pushes (Forces) the changes in the local repository up to the remote repository
 echo "Git pushing to https://${git_host}/${git_user_id}/${git_repo_id}.git"
-git push origin master 2>&1 | grep -v 'To https'
-
+git push origin master 2>&1

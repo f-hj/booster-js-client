@@ -173,16 +173,10 @@ export interface InlineObject3 {
 export interface InlineResponse200 {
     /**
      * 
-     * @type {boolean}
+     * @type {Array<Brand>}
      * @memberof InlineResponse200
      */
-    success?: boolean;
-    /**
-     * 
-     * @type {Brand}
-     * @memberof InlineResponse200
-     */
-    brand?: Brand;
+    brands?: Array<Brand>;
 }
 /**
  * 
@@ -196,6 +190,12 @@ export interface InlineResponse2001 {
      * @memberof InlineResponse2001
      */
     success?: boolean;
+    /**
+     * 
+     * @type {Brand}
+     * @memberof InlineResponse2001
+     */
+    brand?: Brand;
 }
 /**
  * 
@@ -209,12 +209,6 @@ export interface InlineResponse2002 {
      * @memberof InlineResponse2002
      */
     success?: boolean;
-    /**
-     * 
-     * @type {User}
-     * @memberof InlineResponse2002
-     */
-    user?: User;
 }
 /**
  * 
@@ -222,6 +216,12 @@ export interface InlineResponse2002 {
  * @interface InlineResponse2003
  */
 export interface InlineResponse2003 {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof InlineResponse2003
+     */
+    success?: boolean;
     /**
      * 
      * @type {User}
@@ -241,10 +241,23 @@ export interface InlineResponse2004 {
      * @memberof InlineResponse2004
      */
     user?: User;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2005
+ */
+export interface InlineResponse2005 {
+    /**
+     * 
+     * @type {User}
+     * @memberof InlineResponse2005
+     */
+    user?: User;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2004
+     * @memberof InlineResponse2005
      */
     token?: string;
 }
@@ -327,25 +340,31 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    password: string;
+    password?: string;
     /**
      * 
      * @type {string}
      * @memberof User
      */
-    name: string;
+    name?: string;
     /**
      * 
      * @type {string}
      * @memberof User
      */
-    email: string;
+    email?: string;
     /**
      * 
      * @type {boolean}
      * @memberof User
      */
     isAdmin?: boolean;
+    /**
+     * 
+     * @type {Array<Brand>}
+     * @memberof User
+     */
+    brands?: Array<Brand>;
 }
 
 /**
@@ -362,7 +381,7 @@ export const BrandsApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         createBrand(inlineObject?: InlineObject, options: any = {}): RequestArgs {
-            const localVarPath = `/v1/brands/`;
+            const localVarPath = `/v1/brands/brand`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -409,7 +428,7 @@ export const BrandsApiAxiosParamCreator = function (configuration?: Configuratio
             if (brandId === null || brandId === undefined) {
                 throw new RequiredError('brandId','Required parameter brandId was null or undefined when calling deleteBrand.');
             }
-            const localVarPath = `/v1/brands/{brandId}`
+            const localVarPath = `/v1/brands/brand/{brandId}`
                 .replace(`{${"brandId"}}`, encodeURIComponent(String(brandId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -453,7 +472,7 @@ export const BrandsApiAxiosParamCreator = function (configuration?: Configuratio
             if (brandId === null || brandId === undefined) {
                 throw new RequiredError('brandId','Required parameter brandId was null or undefined when calling getBrand.');
             }
-            const localVarPath = `/v1/brands/{brandId}`
+            const localVarPath = `/v1/brands/brand/{brandId}`
                 .replace(`{${"brandId"}}`, encodeURIComponent(String(brandId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -463,6 +482,82 @@ export const BrandsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List all brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listBrands(options: any = {}): RequestArgs {
+            const localVarPath = `/v1/brands/brands`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List my brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listMyBrands(options: any = {}): RequestArgs {
+            const localVarPath = `/v1/brands/myBrands`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
 
 
     
@@ -489,7 +584,7 @@ export const BrandsApiAxiosParamCreator = function (configuration?: Configuratio
             if (brandId === null || brandId === undefined) {
                 throw new RequiredError('brandId','Required parameter brandId was null or undefined when calling updateBrand.');
             }
-            const localVarPath = `/v1/brands/{brandId}`
+            const localVarPath = `/v1/brands/brand/{brandId}`
                 .replace(`{${"brandId"}}`, encodeURIComponent(String(brandId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -541,7 +636,7 @@ export const BrandsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createBrand(inlineObject?: InlineObject, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200> {
+        createBrand(inlineObject?: InlineObject, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
             const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).createBrand(inlineObject, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -555,7 +650,7 @@ export const BrandsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteBrand(brandId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
+        deleteBrand(brandId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002> {
             const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).deleteBrand(brandId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -569,8 +664,34 @@ export const BrandsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBrand(brandId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200> {
+        getBrand(brandId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
             const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).getBrand(brandId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary List all brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listBrands(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200> {
+            const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).listBrands(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary List my brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listMyBrands(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200> {
+            const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).listMyBrands(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -584,7 +705,7 @@ export const BrandsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateBrand(brandId: string, inlineObject1?: InlineObject1, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200> {
+        updateBrand(brandId: string, inlineObject1?: InlineObject1, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
             const localVarAxiosArgs = BrandsApiAxiosParamCreator(configuration).updateBrand(brandId, inlineObject1, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -629,6 +750,24 @@ export const BrandsApiFactory = function (configuration?: Configuration, basePat
          */
         getBrand(brandId: string, options?: any) {
             return BrandsApiFp(configuration).getBrand(brandId, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary List all brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listBrands(options?: any) {
+            return BrandsApiFp(configuration).listBrands(options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary List my brands
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listMyBrands(options?: any) {
+            return BrandsApiFp(configuration).listMyBrands(options)(axios, basePath);
         },
         /**
          * 
@@ -685,6 +824,28 @@ export class BrandsApi extends BaseAPI {
      */
     public getBrand(brandId: string, options?: any) {
         return BrandsApiFp(this.configuration).getBrand(brandId, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary List all brands
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrandsApi
+     */
+    public listBrands(options?: any) {
+        return BrandsApiFp(this.configuration).listBrands(options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary List my brands
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BrandsApi
+     */
+    public listMyBrands(options?: any) {
+        return BrandsApiFp(this.configuration).listMyBrands(options)(this.axios, this.basePath);
     }
 
     /**
@@ -753,7 +914,7 @@ export const StatusApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStatus(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
+        getStatus(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002> {
             const localVarAxiosArgs = StatusApiAxiosParamCreator(configuration).getStatus(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -844,6 +1005,44 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Get current logged user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMyself(options: any = {}): RequestArgs {
+            const localVarPath = `/v1/users/me`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get an user
          * @param {string} userId User ID
          * @param {*} [options] Override http request option.
@@ -854,7 +1053,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getUser.');
             }
-            const localVarPath = `/v1/users/{userId}`
+            const localVarPath = `/v1/users/user/{userId}`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -864,6 +1063,15 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
 
 
     
@@ -927,8 +1135,21 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUser(inlineObject2?: InlineObject2, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002> {
+        createUser(inlineObject2?: InlineObject2, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).createUser(inlineObject2, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Get current logged user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMyself(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004> {
+            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).getMyself(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -941,7 +1162,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUser(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003> {
+        getUser(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).getUser(userId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -955,7 +1176,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004> {
+        loginUser(inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).loginUser(inlineObject3, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -980,6 +1201,15 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          */
         createUser(inlineObject2?: InlineObject2, options?: any) {
             return UsersApiFp(configuration).createUser(inlineObject2, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary Get current logged user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMyself(options?: any) {
+            return UsersApiFp(configuration).getMyself(options)(axios, basePath);
         },
         /**
          * 
@@ -1021,6 +1251,17 @@ export class UsersApi extends BaseAPI {
      */
     public createUser(inlineObject2?: InlineObject2, options?: any) {
         return UsersApiFp(this.configuration).createUser(inlineObject2, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary Get current logged user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public getMyself(options?: any) {
+        return UsersApiFp(this.configuration).getMyself(options)(this.axios, this.basePath);
     }
 
     /**
