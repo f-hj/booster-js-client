@@ -52,7 +52,7 @@ fi
 
 git pull origin master
 
-cp -R $olddir/* .
+cp -r $olddir/. .
 
 # Adds the files in the local repository and stages them for commit.
 git add .
