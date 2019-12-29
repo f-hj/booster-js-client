@@ -134,10 +134,10 @@ export interface InlineObject1 {
 export interface InlineObject2 {
     /**
      *
-     * @type {User}
+     * @type {Product}
      * @memberof InlineObject2
      */
-    user?: User;
+    product?: Product;
 }
 /**
  *
@@ -147,14 +147,40 @@ export interface InlineObject2 {
 export interface InlineObject3 {
     /**
      *
-     * @type {string}
+     * @type {Product}
      * @memberof InlineObject3
+     */
+    product?: Product;
+}
+/**
+ *
+ * @export
+ * @interface InlineObject4
+ */
+export interface InlineObject4 {
+    /**
+     *
+     * @type {User}
+     * @memberof InlineObject4
+     */
+    user?: User;
+}
+/**
+ *
+ * @export
+ * @interface InlineObject5
+ */
+export interface InlineObject5 {
+    /**
+     *
+     * @type {string}
+     * @memberof InlineObject5
      */
     email?: string;
     /**
      *
      * @type {string}
-     * @memberof InlineObject3
+     * @memberof InlineObject5
      */
     password?: string;
 }
@@ -189,6 +215,38 @@ export interface InlineResponse2001 {
      * @memberof InlineResponse2001
      */
     brand?: Brand;
+}
+/**
+ *
+ * @export
+ * @interface InlineResponse20010
+ */
+export interface InlineResponse20010 {
+    /**
+     *
+     * @type {User}
+     * @memberof InlineResponse20010
+     */
+    user?: User;
+}
+/**
+ *
+ * @export
+ * @interface InlineResponse20011
+ */
+export interface InlineResponse20011 {
+    /**
+     *
+     * @type {User}
+     * @memberof InlineResponse20011
+     */
+    user?: User;
+    /**
+     *
+     * @type {string}
+     * @memberof InlineResponse20011
+     */
+    token?: string;
 }
 /**
  *
@@ -243,16 +301,10 @@ export interface InlineResponse2004 {
 export interface InlineResponse2005 {
     /**
      *
-     * @type {boolean}
+     * @type {Product}
      * @memberof InlineResponse2005
      */
-    success?: boolean;
-    /**
-     *
-     * @type {User}
-     * @memberof InlineResponse2005
-     */
-    user?: User;
+    product?: Product;
 }
 /**
  *
@@ -262,10 +314,10 @@ export interface InlineResponse2005 {
 export interface InlineResponse2006 {
     /**
      *
-     * @type {Array<User>}
+     * @type {Array<Product>}
      * @memberof InlineResponse2006
      */
-    users?: Array<User>;
+    products?: Array<Product>;
 }
 /**
  *
@@ -275,16 +327,16 @@ export interface InlineResponse2006 {
 export interface InlineResponse2007 {
     /**
      *
+     * @type {boolean}
+     * @memberof InlineResponse2007
+     */
+    success?: boolean;
+    /**
+     *
      * @type {User}
      * @memberof InlineResponse2007
      */
     user?: User;
-    /**
-     *
-     * @type {Array<Log>}
-     * @memberof InlineResponse2007
-     */
-    logs?: Array<Log>;
 }
 /**
  *
@@ -294,10 +346,10 @@ export interface InlineResponse2007 {
 export interface InlineResponse2008 {
     /**
      *
-     * @type {User}
+     * @type {Array<User>}
      * @memberof InlineResponse2008
      */
-    user?: User;
+    users?: Array<User>;
 }
 /**
  *
@@ -313,10 +365,10 @@ export interface InlineResponse2009 {
     user?: User;
     /**
      *
-     * @type {string}
+     * @type {Array<Log>}
      * @memberof InlineResponse2009
      */
-    token?: string;
+    logs?: Array<Log>;
 }
 /**
  *
@@ -391,7 +443,7 @@ export interface Product {
      * @type {Brand}
      * @memberof Product
      */
-    brand: Brand;
+    brand?: Brand;
     /**
      *
      * @type {string}
@@ -465,12 +517,6 @@ export interface User {
      * @memberof User
      */
     createdAt?: string;
-    /**
-     *
-     * @type {Brand}
-     * @memberof User
-     */
-    createdBy?: Brand;
 }
 /**
  * BrandsApi - axios parameter creator
@@ -726,6 +772,168 @@ export declare class BrandsApi extends BaseAPI {
     updateBrand(brandId: string, inlineObject1?: InlineObject1, options?: any): AxiosPromise<InlineResponse2001>;
 }
 /**
+ * ProductsApi - axios parameter creator
+ * @export
+ */
+export declare const ProductsApiAxiosParamCreator: (configuration?: Configuration) => {
+    /**
+     *
+     * @summary Create a product
+     * @param {InlineObject2} [inlineObject2]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createProduct(inlineObject2?: InlineObject2, options?: any): RequestArgs;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} productId Product ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getProduct(productId: string, options?: any): RequestArgs;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} brandId Brand ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listBrandProducts(brandId: string, options?: any): RequestArgs;
+    /**
+     *
+     * @summary Update a product
+     * @param {string} productId Product ID
+     * @param {InlineObject3} [inlineObject3]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateProduct(productId: string, inlineObject3?: InlineObject3, options?: any): RequestArgs;
+};
+/**
+ * ProductsApi - functional programming interface
+ * @export
+ */
+export declare const ProductsApiFp: (configuration?: Configuration) => {
+    /**
+     *
+     * @summary Create a product
+     * @param {InlineObject2} [inlineObject2]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createProduct(inlineObject2?: InlineObject2, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} productId Product ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getProduct(productId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} brandId Brand ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listBrandProducts(brandId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>;
+    /**
+     *
+     * @summary Update a product
+     * @param {string} productId Product ID
+     * @param {InlineObject3} [inlineObject3]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateProduct(productId: string, inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>;
+};
+/**
+ * ProductsApi - factory interface
+ * @export
+ */
+export declare const ProductsApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
+    /**
+     *
+     * @summary Create a product
+     * @param {InlineObject2} [inlineObject2]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createProduct(inlineObject2?: InlineObject2, options?: any): AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} productId Product ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getProduct(productId: string, options?: any): AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} brandId Brand ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listBrandProducts(brandId: string, options?: any): AxiosPromise<InlineResponse2006>;
+    /**
+     *
+     * @summary Update a product
+     * @param {string} productId Product ID
+     * @param {InlineObject3} [inlineObject3]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateProduct(productId: string, inlineObject3?: InlineObject3, options?: any): AxiosPromise<InlineResponse2001>;
+};
+/**
+ * ProductsApi - object-oriented interface
+ * @export
+ * @class ProductsApi
+ * @extends {BaseAPI}
+ */
+export declare class ProductsApi extends BaseAPI {
+    /**
+     *
+     * @summary Create a product
+     * @param {InlineObject2} [inlineObject2]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    createProduct(inlineObject2?: InlineObject2, options?: any): AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} productId Product ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    getProduct(productId: string, options?: any): AxiosPromise<InlineResponse2005>;
+    /**
+     *
+     * @summary Get current product
+     * @param {string} brandId Brand ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    listBrandProducts(brandId: string, options?: any): AxiosPromise<InlineResponse2006>;
+    /**
+     *
+     * @summary Update a product
+     * @param {string} productId Product ID
+     * @param {InlineObject3} [inlineObject3]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    updateProduct(productId: string, inlineObject3?: InlineObject3, options?: any): AxiosPromise<InlineResponse2001>;
+}
+/**
  * StatusApi - axios parameter creator
  * @export
  */
@@ -788,11 +996,11 @@ export declare const UsersApiAxiosParamCreator: (configuration?: Configuration) 
     /**
      *
      * @summary Create an user
-     * @param {InlineObject2} [inlineObject2]
+     * @param {InlineObject4} [inlineObject4]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createUser(inlineObject2?: InlineObject2, options?: any): RequestArgs;
+    createUser(inlineObject4?: InlineObject4, options?: any): RequestArgs;
     /**
      *
      * @summary Get current logged user
@@ -818,11 +1026,11 @@ export declare const UsersApiAxiosParamCreator: (configuration?: Configuration) 
     /**
      *
      * @summary Login an user
-     * @param {InlineObject3} [inlineObject3]
+     * @param {InlineObject5} [inlineObject5]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    loginUser(inlineObject3?: InlineObject3, options?: any): RequestArgs;
+    loginUser(inlineObject5?: InlineObject5, options?: any): RequestArgs;
 };
 /**
  * UsersApi - functional programming interface
@@ -832,18 +1040,18 @@ export declare const UsersApiFp: (configuration?: Configuration) => {
     /**
      *
      * @summary Create an user
-     * @param {InlineObject2} [inlineObject2]
+     * @param {InlineObject4} [inlineObject4]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createUser(inlineObject2?: InlineObject2, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>;
+    createUser(inlineObject4?: InlineObject4, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>;
     /**
      *
      * @summary Get current logged user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getMyself(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>;
+    getMyself(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>;
     /**
      *
      * @summary Get an user
@@ -851,22 +1059,22 @@ export declare const UsersApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getUser(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>;
+    getUser(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>;
     /**
      *
      * @summary List all users
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    listUsers(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>;
+    listUsers(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>;
     /**
      *
      * @summary Login an user
-     * @param {InlineObject3} [inlineObject3]
+     * @param {InlineObject5} [inlineObject5]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    loginUser(inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>;
+    loginUser(inlineObject5?: InlineObject5, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20011>;
 };
 /**
  * UsersApi - factory interface
@@ -876,18 +1084,18 @@ export declare const UsersApiFactory: (configuration?: Configuration, basePath?:
     /**
      *
      * @summary Create an user
-     * @param {InlineObject2} [inlineObject2]
+     * @param {InlineObject4} [inlineObject4]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createUser(inlineObject2?: InlineObject2, options?: any): AxiosPromise<InlineResponse2005>;
+    createUser(inlineObject4?: InlineObject4, options?: any): AxiosPromise<InlineResponse2007>;
     /**
      *
      * @summary Get current logged user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getMyself(options?: any): AxiosPromise<InlineResponse2008>;
+    getMyself(options?: any): AxiosPromise<InlineResponse20010>;
     /**
      *
      * @summary Get an user
@@ -895,22 +1103,22 @@ export declare const UsersApiFactory: (configuration?: Configuration, basePath?:
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getUser(userId: string, options?: any): AxiosPromise<InlineResponse2007>;
+    getUser(userId: string, options?: any): AxiosPromise<InlineResponse2009>;
     /**
      *
      * @summary List all users
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    listUsers(options?: any): AxiosPromise<InlineResponse2006>;
+    listUsers(options?: any): AxiosPromise<InlineResponse2008>;
     /**
      *
      * @summary Login an user
-     * @param {InlineObject3} [inlineObject3]
+     * @param {InlineObject5} [inlineObject5]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    loginUser(inlineObject3?: InlineObject3, options?: any): AxiosPromise<InlineResponse2009>;
+    loginUser(inlineObject5?: InlineObject5, options?: any): AxiosPromise<InlineResponse20011>;
 };
 /**
  * UsersApi - object-oriented interface
@@ -922,12 +1130,12 @@ export declare class UsersApi extends BaseAPI {
     /**
      *
      * @summary Create an user
-     * @param {InlineObject2} [inlineObject2]
+     * @param {InlineObject4} [inlineObject4]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    createUser(inlineObject2?: InlineObject2, options?: any): AxiosPromise<InlineResponse2005>;
+    createUser(inlineObject4?: InlineObject4, options?: any): AxiosPromise<InlineResponse2007>;
     /**
      *
      * @summary Get current logged user
@@ -935,7 +1143,7 @@ export declare class UsersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    getMyself(options?: any): AxiosPromise<InlineResponse2008>;
+    getMyself(options?: any): AxiosPromise<InlineResponse20010>;
     /**
      *
      * @summary Get an user
@@ -944,7 +1152,7 @@ export declare class UsersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    getUser(userId: string, options?: any): AxiosPromise<InlineResponse2007>;
+    getUser(userId: string, options?: any): AxiosPromise<InlineResponse2009>;
     /**
      *
      * @summary List all users
@@ -952,14 +1160,14 @@ export declare class UsersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    listUsers(options?: any): AxiosPromise<InlineResponse2006>;
+    listUsers(options?: any): AxiosPromise<InlineResponse2008>;
     /**
      *
      * @summary Login an user
-     * @param {InlineObject3} [inlineObject3]
+     * @param {InlineObject5} [inlineObject5]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    loginUser(inlineObject3?: InlineObject3, options?: any): AxiosPromise<InlineResponse2009>;
+    loginUser(inlineObject5?: InlineObject5, options?: any): AxiosPromise<InlineResponse20011>;
 }
