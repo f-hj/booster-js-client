@@ -351,10 +351,10 @@ export interface InlineResponse20012 {
 export interface InlineResponse20013 {
     /**
      * 
-     * @type {User}
+     * @type {Array<Log>}
      * @memberof InlineResponse20013
      */
-    user?: User;
+    logs?: Array<Log>;
 }
 /**
  * 
@@ -368,10 +368,23 @@ export interface InlineResponse20014 {
      * @memberof InlineResponse20014
      */
     user?: User;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse20015
+ */
+export interface InlineResponse20015 {
+    /**
+     * 
+     * @type {User}
+     * @memberof InlineResponse20015
+     */
+    user?: User;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse20014
+     * @memberof InlineResponse20015
      */
     token?: string;
 }
@@ -2202,6 +2215,50 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs(userId: string, options: any = {}): RequestArgs {
+            // verify required parameter 'userId' is not null or undefined
+            if (userId === null || userId === undefined) {
+                throw new RequiredError('userId','Required parameter userId was null or undefined when calling getUserLogs.');
+            }
+            const localVarPath = `/v1/users/user/{userId}/logs`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary List all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2301,7 +2358,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMyself(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20013> {
+        getMyself(options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20014> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).getMyself(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2317,6 +2374,20 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         getUser(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20012> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).getUser(userId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs(userId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20013> {
+            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).getUserLogs(userId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2342,7 +2413,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(inlineObject7?: InlineObject7, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20014> {
+        loginUser(inlineObject7?: InlineObject7, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20015> {
             const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).loginUser(inlineObject7, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2386,6 +2457,16 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          */
         getUser(userId: string, options?: any) {
             return UsersApiFp(configuration).getUser(userId, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs(userId: string, options?: any) {
+            return UsersApiFp(configuration).getUserLogs(userId, options)(axios, basePath);
         },
         /**
          * 
@@ -2449,6 +2530,18 @@ export class UsersApi extends BaseAPI {
      */
     public getUser(userId: string, options?: any) {
         return UsersApiFp(this.configuration).getUser(userId, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary Get what the used did
+     * @param {string} userId User ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public getUserLogs(userId: string, options?: any) {
+        return UsersApiFp(this.configuration).getUserLogs(userId, options)(this.axios, this.basePath);
     }
 
     /**

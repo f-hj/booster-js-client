@@ -1486,6 +1486,46 @@ exports.UsersApiAxiosParamCreator = function (configuration) {
         },
         /**
          *
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs: function (userId, options) {
+            if (options === void 0) { options = {}; }
+            // verify required parameter 'userId' is not null or undefined
+            if (userId === null || userId === undefined) {
+                throw new base_1.RequiredError('userId', 'Required parameter userId was null or undefined when calling getUserLogs.');
+            }
+            var localVarPath = "/v1/users/user/{userId}/logs"
+                .replace("{" + "userId" + "}", encodeURIComponent(String(userId)));
+            var localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            var baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            var localVarRequestOptions = __assign(__assign({ method: 'GET' }, baseOptions), options);
+            var localVarHeaderParameter = {};
+            var localVarQueryParameter = {};
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                var accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+            localVarUrlObj.query = __assign(__assign(__assign({}, localVarUrlObj.query), localVarQueryParameter), options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = __assign(__assign({}, localVarHeaderParameter), options.headers);
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *
          * @summary List all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1605,6 +1645,22 @@ exports.UsersApiFp = function (configuration) {
         },
         /**
          *
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs: function (userId, options) {
+            var localVarAxiosArgs = exports.UsersApiAxiosParamCreator(configuration).getUserLogs(userId, options);
+            return function (axios, basePath) {
+                if (axios === void 0) { axios = axios_1.default; }
+                if (basePath === void 0) { basePath = base_1.BASE_PATH; }
+                var axiosRequestArgs = __assign(__assign({}, localVarAxiosArgs.options), { url: basePath + localVarAxiosArgs.url });
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         *
          * @summary List all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1673,6 +1729,16 @@ exports.UsersApiFactory = function (configuration, basePath, axios) {
         },
         /**
          *
+         * @summary Get what the used did
+         * @param {string} userId User ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserLogs: function (userId, options) {
+            return exports.UsersApiFp(configuration).getUserLogs(userId, options)(axios, basePath);
+        },
+        /**
+         *
          * @summary List all users
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1734,6 +1800,17 @@ var UsersApi = /** @class */ (function (_super) {
      */
     UsersApi.prototype.getUser = function (userId, options) {
         return exports.UsersApiFp(this.configuration).getUser(userId, options)(this.axios, this.basePath);
+    };
+    /**
+     *
+     * @summary Get what the used did
+     * @param {string} userId User ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    UsersApi.prototype.getUserLogs = function (userId, options) {
+        return exports.UsersApiFp(this.configuration).getUserLogs(userId, options)(this.axios, this.basePath);
     };
     /**
      *
