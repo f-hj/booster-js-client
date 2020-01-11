@@ -143,7 +143,24 @@ export interface Image {
      * @memberof Image
      */
     model?: ProductModel;
+    /**
+     * Type of the image for the product
+     * @type {string}
+     * @memberof Image
+     */
+    priority?: ImagePriorityEnum;
 }
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ImagePriorityEnum {
+    None = 'none',
+    Primary = 'primary',
+    Secondary = 'secondary'
+}
+
 /**
  * 
  * @export
@@ -190,17 +207,11 @@ export interface InlineObject2 {
  */
 export interface InlineObject3 {
     /**
-     * Display name
-     * @type {string}
+     * 
+     * @type {Image}
      * @memberof InlineObject3
      */
-    name?: string;
-    /**
-     * Base64 encoded image with header (eg: \'data:image/png;base64,iVBORw0KGgoAAAANSUhEU...\')
-     * @type {string}
-     * @memberof InlineObject3
-     */
-    content?: string;
+    image?: Image;
 }
 /**
  * 
@@ -209,11 +220,17 @@ export interface InlineObject3 {
  */
 export interface InlineObject4 {
     /**
-     * 
-     * @type {Product}
+     * Display name
+     * @type {string}
      * @memberof InlineObject4
      */
-    product?: Product;
+    name?: string;
+    /**
+     * Base64 encoded image with header (eg: \'data:image/png;base64,iVBORw0KGgoAAAANSUhEU...\')
+     * @type {string}
+     * @memberof InlineObject4
+     */
+    content?: string;
 }
 /**
  * 
@@ -236,10 +253,10 @@ export interface InlineObject5 {
 export interface InlineObject6 {
     /**
      * 
-     * @type {User}
+     * @type {Product}
      * @memberof InlineObject6
      */
-    user?: User;
+    product?: Product;
 }
 /**
  * 
@@ -249,14 +266,27 @@ export interface InlineObject6 {
 export interface InlineObject7 {
     /**
      * 
-     * @type {string}
+     * @type {User}
      * @memberof InlineObject7
+     */
+    user?: User;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject8
+ */
+export interface InlineObject8 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject8
      */
     email?: string;
     /**
      * 
      * @type {string}
-     * @memberof InlineObject7
+     * @memberof InlineObject8
      */
     password?: string;
 }
@@ -1387,6 +1417,50 @@ export const ImagesApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @summary Delete an image from id
+         * @param {string} imageId Image ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteImage(imageId: string, options: any = {}): RequestArgs {
+            // verify required parameter 'imageId' is not null or undefined
+            if (imageId === null || imageId === undefined) {
+                throw new RequiredError('imageId','Required parameter imageId was null or undefined when calling deleteImage.');
+            }
+            const localVarPath = `/v1/images/image/${imageId}`
+                .replace(`{${"imageId"}}`, encodeURIComponent(String(imageId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get an image from id
          * @param {string} imageId Image ID
          * @param {*} [options] Override http request option.
@@ -1424,163 +1498,17 @@ export const ImagesApiAxiosParamCreator = function (configuration?: Configuratio
          * 
          * @summary Post an image for a product
          * @param {string} productId Product ID
-         * @param {InlineObject3} [inlineObject3] 
+         * @param {InlineObject4} [inlineObject4] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        productImageUpload(productId: string, inlineObject3?: InlineObject3, options: any = {}): RequestArgs {
+        productImageUpload(productId: string, inlineObject4?: InlineObject4, options: any = {}): RequestArgs {
             // verify required parameter 'productId' is not null or undefined
             if (productId === null || productId === undefined) {
                 throw new RequiredError('productId','Required parameter productId was null or undefined when calling productImageUpload.');
             }
             const localVarPath = `/v1/images/product/${productId}`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
-            const needsSerialization = (typeof inlineObject3 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject3 !== undefined ? inlineObject3 : {}) : (inlineObject3 || "");
-
-            return {
-                url: globalImportUrl.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ImagesApi - functional programming interface
- * @export
- */
-export const ImagesApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Get an image from id
-         * @param {string} imageId Image ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getImage(imageId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void> {
-            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).getImage(imageId, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @summary Post an image for a product
-         * @param {string} productId Product ID
-         * @param {InlineObject3} [inlineObject3] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        productImageUpload(productId: string, inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006> {
-            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).productImageUpload(productId, inlineObject3, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-    }
-};
-
-/**
- * ImagesApi - factory interface
- * @export
- */
-export const ImagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    return {
-        /**
-         * 
-         * @summary Get an image from id
-         * @param {string} imageId Image ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getImage(imageId: string, options?: any) {
-            return ImagesApiFp(configuration).getImage(imageId, options)(axios, basePath);
-        },
-        /**
-         * 
-         * @summary Post an image for a product
-         * @param {string} productId Product ID
-         * @param {InlineObject3} [inlineObject3] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        productImageUpload(productId: string, inlineObject3?: InlineObject3, options?: any) {
-            return ImagesApiFp(configuration).productImageUpload(productId, inlineObject3, options)(axios, basePath);
-        },
-    };
-};
-
-/**
- * ImagesApi - object-oriented interface
- * @export
- * @class ImagesApi
- * @extends {BaseAPI}
- */
-export class ImagesApi extends BaseAPI {
-    /**
-     * 
-     * @summary Get an image from id
-     * @param {string} imageId Image ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ImagesApi
-     */
-    public getImage(imageId: string, options?: any) {
-        return ImagesApiFp(this.configuration).getImage(imageId, options)(this.axios, this.basePath);
-    }
-
-    /**
-     * 
-     * @summary Post an image for a product
-     * @param {string} productId Product ID
-     * @param {InlineObject3} [inlineObject3] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ImagesApi
-     */
-    public productImageUpload(productId: string, inlineObject3?: InlineObject3, options?: any) {
-        return ImagesApiFp(this.configuration).productImageUpload(productId, inlineObject3, options)(this.axios, this.basePath);
-    }
-
-}
-
-
-/**
- * ProductsApi - axios parameter creator
- * @export
- */
-export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Create a product
-         * @param {InlineObject4} [inlineObject4] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createProduct(inlineObject4?: InlineObject4, options: any = {}): RequestArgs {
-            const localVarPath = `/v1/products/product`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1609,6 +1537,285 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
             const needsSerialization = (typeof inlineObject4 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject4 !== undefined ? inlineObject4 : {}) : (inlineObject4 || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update an image from id
+         * @param {string} imageId Image ID
+         * @param {InlineObject3} [inlineObject3] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateImage(imageId: string, inlineObject3?: InlineObject3, options: any = {}): RequestArgs {
+            // verify required parameter 'imageId' is not null or undefined
+            if (imageId === null || imageId === undefined) {
+                throw new RequiredError('imageId','Required parameter imageId was null or undefined when calling updateImage.');
+            }
+            const localVarPath = `/v1/images/image/${imageId}`
+                .replace(`{${"imageId"}}`, encodeURIComponent(String(imageId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+            const needsSerialization = (typeof inlineObject3 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject3 !== undefined ? inlineObject3 : {}) : (inlineObject3 || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ImagesApi - functional programming interface
+ * @export
+ */
+export const ImagesApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Delete an image from id
+         * @param {string} imageId Image ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteImage(imageId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003> {
+            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).deleteImage(imageId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Get an image from id
+         * @param {string} imageId Image ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getImage(imageId: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void> {
+            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).getImage(imageId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Post an image for a product
+         * @param {string} productId Product ID
+         * @param {InlineObject4} [inlineObject4] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productImageUpload(productId: string, inlineObject4?: InlineObject4, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006> {
+            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).productImageUpload(productId, inlineObject4, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update an image from id
+         * @param {string} imageId Image ID
+         * @param {InlineObject3} [inlineObject3] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateImage(imageId: string, inlineObject3?: InlineObject3, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006> {
+            const localVarAxiosArgs = ImagesApiAxiosParamCreator(configuration).updateImage(imageId, inlineObject3, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * ImagesApi - factory interface
+ * @export
+ */
+export const ImagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Delete an image from id
+         * @param {string} imageId Image ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteImage(imageId: string, options?: any) {
+            return ImagesApiFp(configuration).deleteImage(imageId, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary Get an image from id
+         * @param {string} imageId Image ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getImage(imageId: string, options?: any) {
+            return ImagesApiFp(configuration).getImage(imageId, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary Post an image for a product
+         * @param {string} productId Product ID
+         * @param {InlineObject4} [inlineObject4] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productImageUpload(productId: string, inlineObject4?: InlineObject4, options?: any) {
+            return ImagesApiFp(configuration).productImageUpload(productId, inlineObject4, options)(axios, basePath);
+        },
+        /**
+         * 
+         * @summary Update an image from id
+         * @param {string} imageId Image ID
+         * @param {InlineObject3} [inlineObject3] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateImage(imageId: string, inlineObject3?: InlineObject3, options?: any) {
+            return ImagesApiFp(configuration).updateImage(imageId, inlineObject3, options)(axios, basePath);
+        },
+    };
+};
+
+/**
+ * ImagesApi - object-oriented interface
+ * @export
+ * @class ImagesApi
+ * @extends {BaseAPI}
+ */
+export class ImagesApi extends BaseAPI {
+    /**
+     * 
+     * @summary Delete an image from id
+     * @param {string} imageId Image ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ImagesApi
+     */
+    public deleteImage(imageId: string, options?: any) {
+        return ImagesApiFp(this.configuration).deleteImage(imageId, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary Get an image from id
+     * @param {string} imageId Image ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ImagesApi
+     */
+    public getImage(imageId: string, options?: any) {
+        return ImagesApiFp(this.configuration).getImage(imageId, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary Post an image for a product
+     * @param {string} productId Product ID
+     * @param {InlineObject4} [inlineObject4] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ImagesApi
+     */
+    public productImageUpload(productId: string, inlineObject4?: InlineObject4, options?: any) {
+        return ImagesApiFp(this.configuration).productImageUpload(productId, inlineObject4, options)(this.axios, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary Update an image from id
+     * @param {string} imageId Image ID
+     * @param {InlineObject3} [inlineObject3] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ImagesApi
+     */
+    public updateImage(imageId: string, inlineObject3?: InlineObject3, options?: any) {
+        return ImagesApiFp(this.configuration).updateImage(imageId, inlineObject3, options)(this.axios, this.basePath);
+    }
+
+}
+
+
+/**
+ * ProductsApi - axios parameter creator
+ * @export
+ */
+export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a product
+         * @param {InlineObject5} [inlineObject5] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProduct(inlineObject5?: InlineObject5, options: any = {}): RequestArgs {
+            const localVarPath = `/v1/products/product`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken()
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
+            const needsSerialization = (typeof inlineObject5 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject5 !== undefined ? inlineObject5 : {}) : (inlineObject5 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -1733,11 +1940,11 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @summary Update a product
          * @param {string} productId Product ID
-         * @param {InlineObject5} [inlineObject5] 
+         * @param {InlineObject6} [inlineObject6] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProduct(productId: string, inlineObject5?: InlineObject5, options: any = {}): RequestArgs {
+        updateProduct(productId: string, inlineObject6?: InlineObject6, options: any = {}): RequestArgs {
             // verify required parameter 'productId' is not null or undefined
             if (productId === null || productId === undefined) {
                 throw new RequiredError('productId','Required parameter productId was null or undefined when calling updateProduct.');
@@ -1770,8 +1977,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
-            const needsSerialization = (typeof inlineObject5 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject5 !== undefined ? inlineObject5 : {}) : (inlineObject5 || "");
+            const needsSerialization = (typeof inlineObject6 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject6 !== undefined ? inlineObject6 : {}) : (inlineObject6 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -1790,12 +1997,12 @@ export const ProductsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Create a product
-         * @param {InlineObject4} [inlineObject4] 
+         * @param {InlineObject5} [inlineObject5] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProduct(inlineObject4?: InlineObject4, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007> {
-            const localVarAxiosArgs = ProductsApiAxiosParamCreator(configuration).createProduct(inlineObject4, options);
+        createProduct(inlineObject5?: InlineObject5, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007> {
+            const localVarAxiosArgs = ProductsApiAxiosParamCreator(configuration).createProduct(inlineObject5, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1847,12 +2054,12 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update a product
          * @param {string} productId Product ID
-         * @param {InlineObject5} [inlineObject5] 
+         * @param {InlineObject6} [inlineObject6] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProduct(productId: string, inlineObject5?: InlineObject5, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
-            const localVarAxiosArgs = ProductsApiAxiosParamCreator(configuration).updateProduct(productId, inlineObject5, options);
+        updateProduct(productId: string, inlineObject6?: InlineObject6, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001> {
+            const localVarAxiosArgs = ProductsApiAxiosParamCreator(configuration).updateProduct(productId, inlineObject6, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1870,12 +2077,12 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Create a product
-         * @param {InlineObject4} [inlineObject4] 
+         * @param {InlineObject5} [inlineObject5] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProduct(inlineObject4?: InlineObject4, options?: any) {
-            return ProductsApiFp(configuration).createProduct(inlineObject4, options)(axios, basePath);
+        createProduct(inlineObject5?: InlineObject5, options?: any) {
+            return ProductsApiFp(configuration).createProduct(inlineObject5, options)(axios, basePath);
         },
         /**
          * 
@@ -1911,12 +2118,12 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * 
          * @summary Update a product
          * @param {string} productId Product ID
-         * @param {InlineObject5} [inlineObject5] 
+         * @param {InlineObject6} [inlineObject6] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProduct(productId: string, inlineObject5?: InlineObject5, options?: any) {
-            return ProductsApiFp(configuration).updateProduct(productId, inlineObject5, options)(axios, basePath);
+        updateProduct(productId: string, inlineObject6?: InlineObject6, options?: any) {
+            return ProductsApiFp(configuration).updateProduct(productId, inlineObject6, options)(axios, basePath);
         },
     };
 };
@@ -1931,13 +2138,13 @@ export class ProductsApi extends BaseAPI {
     /**
      * 
      * @summary Create a product
-     * @param {InlineObject4} [inlineObject4] 
+     * @param {InlineObject5} [inlineObject5] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProductsApi
      */
-    public createProduct(inlineObject4?: InlineObject4, options?: any) {
-        return ProductsApiFp(this.configuration).createProduct(inlineObject4, options)(this.axios, this.basePath);
+    public createProduct(inlineObject5?: InlineObject5, options?: any) {
+        return ProductsApiFp(this.configuration).createProduct(inlineObject5, options)(this.axios, this.basePath);
     }
 
     /**
@@ -1980,13 +2187,13 @@ export class ProductsApi extends BaseAPI {
      * 
      * @summary Update a product
      * @param {string} productId Product ID
-     * @param {InlineObject5} [inlineObject5] 
+     * @param {InlineObject6} [inlineObject6] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProductsApi
      */
-    public updateProduct(productId: string, inlineObject5?: InlineObject5, options?: any) {
-        return ProductsApiFp(this.configuration).updateProduct(productId, inlineObject5, options)(this.axios, this.basePath);
+    public updateProduct(productId: string, inlineObject6?: InlineObject6, options?: any) {
+        return ProductsApiFp(this.configuration).updateProduct(productId, inlineObject6, options)(this.axios, this.basePath);
     }
 
 }
@@ -2100,11 +2307,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Create an user
-         * @param {InlineObject6} [inlineObject6] 
+         * @param {InlineObject7} [inlineObject7] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUser(inlineObject6?: InlineObject6, options: any = {}): RequestArgs {
+        createUser(inlineObject7?: InlineObject7, options: any = {}): RequestArgs {
             const localVarPath = `/v1/users`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -2123,8 +2330,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
-            const needsSerialization = (typeof inlineObject6 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject6 !== undefined ? inlineObject6 : {}) : (inlineObject6 || "");
+            const needsSerialization = (typeof inlineObject7 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject7 !== undefined ? inlineObject7 : {}) : (inlineObject7 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -2298,11 +2505,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Login an user
-         * @param {InlineObject7} [inlineObject7] 
+         * @param {InlineObject8} [inlineObject8] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(inlineObject7?: InlineObject7, options: any = {}): RequestArgs {
+        loginUser(inlineObject8?: InlineObject8, options: any = {}): RequestArgs {
             const localVarPath = `/v1/users/login`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -2321,8 +2528,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
-            const needsSerialization = (typeof inlineObject7 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject7 !== undefined ? inlineObject7 : {}) : (inlineObject7 || "");
+            const needsSerialization = (typeof inlineObject8 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject8 !== undefined ? inlineObject8 : {}) : (inlineObject8 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -2341,12 +2548,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Create an user
-         * @param {InlineObject6} [inlineObject6] 
+         * @param {InlineObject7} [inlineObject7] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUser(inlineObject6?: InlineObject6, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010> {
-            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).createUser(inlineObject6, options);
+        createUser(inlineObject7?: InlineObject7, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010> {
+            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).createUser(inlineObject7, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2409,12 +2616,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Login an user
-         * @param {InlineObject7} [inlineObject7] 
+         * @param {InlineObject8} [inlineObject8] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(inlineObject7?: InlineObject7, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20015> {
-            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).loginUser(inlineObject7, options);
+        loginUser(inlineObject8?: InlineObject8, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20015> {
+            const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).loginUser(inlineObject8, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2432,12 +2639,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Create an user
-         * @param {InlineObject6} [inlineObject6] 
+         * @param {InlineObject7} [inlineObject7] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUser(inlineObject6?: InlineObject6, options?: any) {
-            return UsersApiFp(configuration).createUser(inlineObject6, options)(axios, basePath);
+        createUser(inlineObject7?: InlineObject7, options?: any) {
+            return UsersApiFp(configuration).createUser(inlineObject7, options)(axios, basePath);
         },
         /**
          * 
@@ -2480,12 +2687,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Login an user
-         * @param {InlineObject7} [inlineObject7] 
+         * @param {InlineObject8} [inlineObject8] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginUser(inlineObject7?: InlineObject7, options?: any) {
-            return UsersApiFp(configuration).loginUser(inlineObject7, options)(axios, basePath);
+        loginUser(inlineObject8?: InlineObject8, options?: any) {
+            return UsersApiFp(configuration).loginUser(inlineObject8, options)(axios, basePath);
         },
     };
 };
@@ -2500,13 +2707,13 @@ export class UsersApi extends BaseAPI {
     /**
      * 
      * @summary Create an user
-     * @param {InlineObject6} [inlineObject6] 
+     * @param {InlineObject7} [inlineObject7] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public createUser(inlineObject6?: InlineObject6, options?: any) {
-        return UsersApiFp(this.configuration).createUser(inlineObject6, options)(this.axios, this.basePath);
+    public createUser(inlineObject7?: InlineObject7, options?: any) {
+        return UsersApiFp(this.configuration).createUser(inlineObject7, options)(this.axios, this.basePath);
     }
 
     /**
@@ -2558,13 +2765,13 @@ export class UsersApi extends BaseAPI {
     /**
      * 
      * @summary Login an user
-     * @param {InlineObject7} [inlineObject7] 
+     * @param {InlineObject8} [inlineObject8] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public loginUser(inlineObject7?: InlineObject7, options?: any) {
-        return UsersApiFp(this.configuration).loginUser(inlineObject7, options)(this.axios, this.basePath);
+    public loginUser(inlineObject8?: InlineObject8, options?: any) {
+        return UsersApiFp(this.configuration).loginUser(inlineObject8, options)(this.axios, this.basePath);
     }
 
 }
